@@ -1,0 +1,39 @@
+# Used for Railway demo with this monorepo
+
+# Use Node.js 22 as the base image
+FROM node:22.6.0-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install curl
+RUN apk add --no-cache curl
+
+# Copy files conditionally based on directory structure
+# mostly for Railway demo
+COPY . /tmp/source/
+RUN if [ -d "/tmp/source/frontend" ]; then \
+    echo "Using /tmp/source/frontend directory" && \
+    cp -r /tmp/source/frontend/* .; \
+    else \
+    echo "Using /tmp/source directory" && \
+    cp -r /tmp/source/* .; \
+    fi && \
+    rm -rf /tmp/source
+
+RUN cat package.json
+
+# Install dependencies
+RUN npm install
+
+# Build the Next.js application
+RUN npm run build
+
+# Use an environment variable for the port, defaulting to 3000
+ENV PORT=3000
+
+# Expose the port that Next.js runs on
+EXPOSE ${PORT}
+
+# Start the application, passing the PORT environment variable
+CMD ["sh", "-c", "npm start -- -p ${PORT}"]
