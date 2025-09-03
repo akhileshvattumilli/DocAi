@@ -44,6 +44,9 @@ if DEBUG:
 SITE_ID = 1
 INSTALLED_APPS = INSTALLED_APPS
 
+AUTH_USER_MODEL = "accounts.MyUser"
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

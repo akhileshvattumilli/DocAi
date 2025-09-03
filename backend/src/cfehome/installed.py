@@ -17,7 +17,10 @@ THIRD_PARTY_INSTALLED_APPS = [
     "ninja_jwt",
 ]
 
-MY_APPS = []
+MY_APPS = [
+    "accounts",
+    "profiles",
+]
 
 
 INSTALLED_APPS = list(set(DJANGO_INSTALLED_APPS + THIRD_PARTY_INSTALLED_APPS + MY_APPS))
