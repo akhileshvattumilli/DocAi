@@ -3,7 +3,7 @@ Django settings for cfehome project using Django 5.1.5.
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 from django.core.management.utils import get_random_secret_key
 
 # uses python-decouple
@@ -26,6 +26,7 @@ SECRET_KEY = config("DJANGO_SECRET_KEY", cast=str, default=get_random_secret_key
 DEBUG = config("DJANGO_DEBUG", cast=bool, default=False)
 
 FRONTEND_URL = config("FRONTEND_URL", cast=str, default="https://djangonext.js")
+
 ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", cast=list, default=[])
 CSRF_TRUSTED_ORIGINS = config("DJANGO_CSRF_TRUSTED_ORIGINS", cast=list, default=[])
 
@@ -43,10 +44,7 @@ if DEBUG:
 # Application definition
 SITE_ID = 1
 INSTALLED_APPS = INSTALLED_APPS
-
-AUTH_USER_MODEL = "accounts.MyUser"
-
-
+AUTH_USER_MODEL = "accounts.MyUser" # accounts.models.MyUser
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -147,3 +145,26 @@ STATICFILES_DIRS = [STATICFILES_BASE_DIR]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+### GOOGLE API OAUTH LOGIN
+
+GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID", default="", cast=str)
+GOOGLE_SECRET_KEY = config("GOOGLE_SECRET_KEY", default="", cast=str)
+GOOGLE_AUTH_BASE_URL = FRONTEND_URL
+GOOGLE_AUTH_CALLBACK_PATH = config("GOOGLE_AUTH_CALLBACK_PATH", default='/google/callback')
+print(GOOGLE_AUTH_BASE_URL, GOOGLE_AUTH_CALLBACK_PATH)
+
+
+##### NINJA JWT SETTINGS 
+
+NINJA_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+
+
+#### CKEDITOR SETTINGS
+CKEDITOR_ACCESS_CREDS = config("CKEDITOR_ACCESS_CREDS", default="", cast=str)

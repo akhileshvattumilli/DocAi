@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAuth } from "@/components/authProvider"
+import GoogleLoginButton from "../google/GoogleLoginButton"
 
 const LOGIN_URL = "/api/login/"
 
@@ -53,6 +54,10 @@ export default function Page() {
               Enter your email below to login to your account
             </p>
           </div>
+          <div>
+            <GoogleLoginButton />
+          </div>
+
           <div className="grid gap-4">
             <form onSubmit={handleSubmit} className="grid gap-4">
               {error && (
@@ -61,12 +66,12 @@ export default function Page() {
                 </div>
               )}
                     <div className="grid gap-2">
-                    <Label htmlFor="username">Username</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
-                        id="username"
-                        type="username"
-                        name="username"
-                        placeholder="Your username"
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="Your email"
                         required
                     />
                     </div>

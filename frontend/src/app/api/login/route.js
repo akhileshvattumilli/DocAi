@@ -7,7 +7,7 @@ const DJANGO_API_URL = process.env.DJANGO_API_URL;
 
 export async function POST(request) {
     const requestData = await request.json()
-    const url = urlJoin(DJANGO_API_URL, "token/pair")
+    const url = urlJoin(DJANGO_API_URL, "login")
     const jsonData = JSON.stringify(requestData)
     const requestOptions = {
         method: "POST",
@@ -24,8 +24,8 @@ export async function POST(request) {
         if (!accessToken || !refreshToken) {
             return NextResponse.json({"detail": "Invalid response from server. Please try again."}, {status: 400})
         }
-        setToken(accessToken)
-        setRefreshToken(refreshToken)
+        await setToken(accessToken)
+        await setRefreshToken(refreshToken)
         return NextResponse.json({"loggedIn": true, "username": responseData.username}, {status: 200})
     }
     return NextResponse.json({"loggedIn": false, ...responseData}, {status: 400})
