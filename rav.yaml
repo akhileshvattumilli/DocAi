@@ -20,6 +20,12 @@ scripts:
     - ../venv/bin/pip-compile src/requirements/prod.in --output-file requirements.txt
     - ../venv/bin/pip install -r requirements.dev.txt
     - ../venv/bin/pip install -r requirements.txt
+  yjs-server:
+    - cd backend
+    - ../venv/bin/python yjs_server.py
+  dev-all:
+    - cd backend
+    - ./start_dev.sh
   generate-favicon:
     # brew install imagemagick
     - magick frontend/public/django-nextjs-favicon.png -resize 32x32 frontend/src/app/favicon.ico

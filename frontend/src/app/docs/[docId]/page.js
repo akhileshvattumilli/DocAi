@@ -46,7 +46,7 @@ export default function DocDetailPage() {
     event.preventDefault()
     setSaving(true)
     setFormError("") // Clear any previous errors
-    const content = editorRef.current.editor.getData()
+        const content = editorRef.current.getData()
     const formData = new FormData(event.target)
     const objectFromForm = Object.fromEntries(formData)
     objectFromForm['content'] = content
@@ -76,8 +76,8 @@ export default function DocDetailPage() {
     }
 }
 
- const handleOnSave = (editor) => {
-  console.log(editor)
+ const handleOnSave = (data) => {
+  console.log('Auto-save triggered:', data)
   submitBtnRef.current.click()
  }
 

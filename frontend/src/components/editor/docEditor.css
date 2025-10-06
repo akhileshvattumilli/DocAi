@@ -13,28 +13,161 @@
 	margin-right: auto;
 }
 
-.ck-content {
-	font-family: 'Lato';
-	line-height: 1.6;
-	word-break: break-word;
-}
-
-.editor-container_classic-editor .editor-container__editor {
-	min-width: 795px;
-	max-width: 795px;
-}
-
 .prose {
     width: 100%;
     max-width: 100% !important;
+    font-family: 'Lato';
+    line-height: 1.6;
+    word-break: break-word;
 }
 
-.ck-editor__editable {
-    min-height: 200px;
-    width: 100%;
+/* TipTap Editor Styles */
+.ProseMirror {
+    outline: none;
+    font-family: 'Lato';
+    line-height: 1.6;
+    word-break: break-word;
 }
 
-.ck.ck-editor__main>.ck-editor__editable {
-    width: 100%;
+.ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #adb5bd;
+    pointer-events: none;
+    height: 0;
 }
 
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.ProseMirror h1 { font-size: 2.25rem; }
+.ProseMirror h2 { font-size: 1.875rem; }
+.ProseMirror h3 { font-size: 1.5rem; }
+.ProseMirror h4 { font-size: 1.25rem; }
+.ProseMirror h5 { font-size: 1.125rem; }
+.ProseMirror h6 { font-size: 1rem; }
+
+.ProseMirror p {
+    margin-bottom: 1rem;
+}
+
+.ProseMirror strong {
+    font-weight: 700;
+}
+
+.ProseMirror em {
+    font-style: italic;
+}
+
+.ProseMirror u {
+    text-decoration: underline;
+}
+
+.ProseMirror a {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.ProseMirror a:hover {
+    color: #1d4ed8;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.ProseMirror li {
+    margin-bottom: 0.25rem;
+}
+
+.ProseMirror blockquote {
+    border-left: 4px solid #e5e7eb;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: #6b7280;
+}
+
+.ProseMirror code {
+    background-color: #f3f4f6;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+}
+
+.ProseMirror pre {
+    background-color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.ProseMirror pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Collaboration Cursor Styles */
+.collaboration-cursor__caret {
+    position: relative;
+    margin-left: -1px;
+    margin-right: -1px;
+    border-left: 1px solid #0d0d0d;
+    border-right: 1px solid #0d0d0d;
+    word-break: normal;
+    pointer-events: none;
+}
+
+.collaboration-cursor__label {
+    position: absolute;
+    top: -1.4em;
+    left: -1px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    user-select: none;
+    color: #0d0d0d;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px 3px 3px 0;
+    white-space: nowrap;
+}
+
+.collaboration-cursor__label::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border: 4px solid transparent;
+    border-top-color: currentColor;
+    border-right-color: currentColor;
+}
+
+/* Selection styles for collaboration */
+.collaboration-selection {
+    position: relative;
+}
+
+.collaboration-selection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+}

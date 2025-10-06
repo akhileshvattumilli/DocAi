@@ -1,183 +1,209 @@
 "use client"
 
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { CloudServices, ClassicEditor, AutoLink, Autosave, BlockQuote, Bold, Essentials, Heading, Italic, Link, Paragraph, Underline } from 'ckeditor5';
-import { PresenceList, RealTimeCollaborativeEditing, AIAssistant, AIRequestError, AITextAdapter } from 'ckeditor5-premium-features';
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import Collaboration from '@tiptap/extension-collaboration'
+import { useEffect, useRef, useState } from 'react'
+import * as Y from 'yjs'
+import { WebsocketProvider } from 'y-websocket'
 
-import 'ckeditor5/ckeditor5.css';
-import 'ckeditor5-premium-features/ckeditor5-premium-features.css';
+export default function DocEditor({ ref, initialData, placeholder, onSave, docId }) {
+  const ydocRef = useRef(null)
+  const providerRef = useRef(null)
+  const [isConnected, setIsConnected] = useState(false)
+  const [users, setUsers] = useState([])
+  const [isReady, setIsReady] = useState(false)
+
+  // Initialize Yjs document and provider
+  useEffect(() => {
+    if (!docId) return
+
+    // Create Yjs document
+    const ydoc = new Y.Doc()
+    ydocRef.current = ydoc
+
+    // Create collaborative XML fragment for TipTap
+    const yXmlFragment = ydoc.getXmlFragment('content')
+
+    // Create WebSocket provider for real-time collaboration
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:1234'
+    const provider = new WebsocketProvider(wsUrl, docId, ydoc)
+    providerRef.current = provider
+
+    // Handle connection status
+    provider.on('status', (event) => {
+      setIsConnected(event.status === 'connected')
+      if (event.status === 'connected') {
+        setIsReady(true)
+      }
+    })
+
+    // Handle awareness (presence) changes
+    provider.awareness.on('change', () => {
+      const states = Array.from(provider.awareness.getStates().values())
+      setUsers(states.map(state => ({
+        name: state.user?.name || 'Anonymous',
+        color: state.user?.color || '#ffb61e'
+      })))
+    })
+
+    // Set user awareness information
+    provider.awareness.setLocalStateField('user', {
+      name: `User ${Math.floor(Math.random() * 1000)}`,
+      color: `#${Math.floor(Math.random()*16777215).toString(16)}`
+    })
+
+    // Cleanup on unmount
+    return () => {
+      provider?.destroy()
+      ydoc?.destroy()
+      setIsReady(false)
+    }
+  }, [docId])
+
+  const editor = useEditor({
+    extensions: isReady && ydocRef.current ? [
+      StarterKit.configure({
+        history: false, // Disable local history since we're using collaborative history
+      }),
+      Collaboration.configure({
+        document: ydocRef.current,
+        field: 'content',
+      }),
+    ] : [
+      StarterKit.configure({
+        history: false,
+      }),
+    ],
+    content: '', // Let Yjs handle the content
+    editorProps: {
+      attributes: {
+        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[300px] p-4 border rounded-md',
+      },
+    },
+    onUpdate: ({ editor }) => {
+      // Handle autosave if onSave is provided
+      if (onSave) {
+        const content = editor.getHTML()
+        onSave({ getData: () => content })
+      }
+    },
+  }, [isReady, ydocRef.current, docId])
 
 
-import 'ckeditor5/ckeditor5.css';
-import './docEditor.css';
-import useSWR from 'swr';
-import fetcher from '@/lib/fetcher';
+  // Expose editor methods to parent component
+  useEffect(() => {
+    if (ref && editor) {
+      ref.current = {
+        editor,
+        getData: () => editor.getHTML(),
+        getText: () => editor.getText(),
+      }
+    }
+  }, [ref, editor])
 
-const COLAB_PLUGINS = [
-	CloudServices,
-	PresenceList,
-	RealTimeCollaborativeEditing
+  if (!editor) {
+    return (
+      <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto min-h-[300px] p-4 border rounded-md bg-gray-50 flex items-center justify-center">
+        {docId ? 'Connecting to collaboration server...' : 'Loading editor...'}
+      </div>
+    )
+  }
 
-]
+  return (
+    <div className="w-full">
+      {/* Connection Status and Users */}
+      <div className="mb-4 p-3 bg-gray-50 rounded-md border">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+            <span className="text-sm font-medium">
+              {isConnected ? 'Connected' : 'Disconnected'}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Collaborative editing:</span>
+            <span className="text-sm font-medium text-green-600">
+              {isConnected ? 'Active' : 'Connecting...'}
+            </span>
+          </div>
+        </div>
+      </div>
 
-class CustomerAITextAdapter extends AITextAdapter {
-	async sendRequest ( requestData ) {
-		const {query, context} = requestData
-		const endpoint = '/api/ai/'
-		const options = {
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json'
-			}, 
-			body: JSON.stringify({
-				query: query,
-				context: context
-			})
-		}
-		const apiR = await fetch(endpoint, options)
-		if (!apiR.ok) {
-			throw AIRequestError("The request failed for unknown reason")
-		}
-		const data = await apiR.json()
-		requestData.onData(data.message)
-	}
-}
+      {/* Toolbar */}
+      <div className="border border-b-0 rounded-t-md bg-gray-50 p-2 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={`px-3 py-1 rounded text-sm font-medium ${
+            editor.isActive('bold') ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          Bold
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          className={`px-3 py-1 rounded text-sm font-medium ${
+            editor.isActive('italic') ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          Italic
+        </button>
+        <div className="w-px h-6 bg-gray-300 mx-1"></div>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          className={`px-3 py-1 rounded text-sm font-medium ${
+            editor.isActive('heading', { level: 1 }) ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          H1
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          className={`px-3 py-1 rounded text-sm font-medium ${
+            editor.isActive('heading', { level: 2 }) ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          H2
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          className={`px-3 py-1 rounded text-sm font-medium ${
+            editor.isActive('heading', { level: 3 }) ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          H3
+        </button>
+        <div className="w-px h-6 bg-gray-300 mx-1"></div>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={`px-3 py-1 rounded text-sm font-medium ${
+            editor.isActive('bulletList') ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          List
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={`px-3 py-1 rounded text-sm font-medium ${
+            editor.isActive('orderedList') ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          Numbered
+        </button>
+      </div>
 
-// /api/accounts/ckeditor/token/
-const CLOUD_SERVICES_TOKEN_URL =
-	'https://rhz9k2n8vwyb.cke-cs.com/token/dev/4ad1bab1085d0754ab1c7415b6e13c32685734615ccbd95447fbe1767b1d?limit=10';
-const CLOUD_SERVICES_WEBSOCKET_URL = 'wss://rhz9k2n8vwyb.cke-cs.com/ws';
-
-export default function DocEditor({ref, initialData, placeholder, onSave, docId}) {
-	const [isLayoutReady, setIsLayoutReady] = useState(false);
-	const {data, isLoading} = useSWR('/api/ckeditor', fetcher)
-	const editorPresenceRef = useRef(null)
-	const license =  data?.license ? data?.license : 'GPL'
-	
-	useEffect(() => {
-		setIsLayoutReady(true);
-
-		return () => setIsLayoutReady(false);
-	}, []);
-
-	const fetchUserToken = async () => {
-		const endpoint = '/api/accounts/ckeditor/token/'
-		const options = {
-			method: "GET",
-			headers: {
-				'Content-Type': 'application/json'
-			}, 
-		}
-		const response = await fetch(endpoint, options)
-		if (!response.ok) {
-			throw new Error("Invalid token")
-		}
-		const data = await response.json()
-		const {myUserToken} = data
-		if (!myUserToken) {
-			throw new Error("Invalid token")
-		}
-		return myUserToken
-	}
-
-	const { editorConfig } = useMemo(() => {
-		if (!isLayoutReady) {
-			return {};
-		}
-		if (isLoading) {
-			return {};
-		}
-
-		return {
-			editorConfig: {
-				toolbar: {
-					items: ['aiCommands', 'aiAssistant', '|','heading', 'bold', 'italic', 'underline', 'blockquote', '|', 'link'],
-					shouldNotGroupWhenFull: false
-				},
-				plugins: COLAB_PLUGINS.concat([AIAssistant, CustomerAITextAdapter, AutoLink, Autosave, BlockQuote, Bold, Essentials, Heading, Italic, Link, Paragraph, Underline]),
-				cloudServices: {
-					tokenUrl: fetchUserToken,
-					webSocketUrl: CLOUD_SERVICES_WEBSOCKET_URL
-				},
-				collaboration: {
-					channelId: `${docId}`,
-				},
-				presenceList: {
-					container: editorPresenceRef.current
-				},
-				heading: {
-					options: [
-						{
-							model: 'paragraph',
-							title: 'Paragraph',
-							class: 'ck-heading_paragraph'
-						},
-						{
-							model: 'heading1',
-							view: 'h1',
-							title: 'Heading 1',
-							class: 'ck-heading_heading1'
-						},
-						{
-							model: 'heading2',
-							view: 'h2',
-							title: 'Heading 2',
-							class: 'ck-heading_heading2'
-						},
-						{
-							model: 'heading3',
-							view: 'h3',
-							title: 'Heading 3',
-							class: 'ck-heading_heading3'
-						},
-						{
-							model: 'heading4',
-							view: 'h4',
-							title: 'Heading 4',
-							class: 'ck-heading_heading4'
-						},
-						{
-							model: 'heading5',
-							view: 'h5',
-							title: 'Heading 5',
-							class: 'ck-heading_heading5'
-						},
-						{
-							model: 'heading6',
-							view: 'h6',
-							title: 'Heading 6',
-							class: 'ck-heading_heading6'
-						}
-					]
-				},
-				autosave: onSave ? {
-					waitingTime: 5000,
-					save: onSave,
-				} : null,
-				initialData: initialData ? initialData: '',
-				licenseKey: license,
-				link: {
-					addTargetToExternalLinks: true,
-					defaultProtocol: 'https://',
-					decorators: {
-						toggleDownloadable: {
-							mode: 'manual',
-							label: 'Downloadable',
-							attributes: {
-								download: 'file'
-							}
-						}
-					}
-				},
-				placeholder: placeholder ? placeholder : 'Type or paste your content here!'
-			}
-		};
-	}, [isLayoutReady, isLoading]);
-
-	return <div className='prose'>
-		<div className="presence mb-2" ref={editorPresenceRef}></div>
-
-		{editorConfig && <CKEditor editor={ClassicEditor} config={editorConfig} ref={ref && ref} />}
-	</div>
+      {/* Editor */}
+      <EditorContent 
+        editor={editor} 
+        className="border rounded-b-md"
+      />
+    </div>
+  )
 }
