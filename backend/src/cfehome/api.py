@@ -60,9 +60,9 @@ def hello(request):
 def login(request, payload: EmailLoginSchema):
     user = authenticate(email=payload.email, password=payload.password)
     if not user:
-        raise HttpError(400, "Could not login user try again")
+        raise HttpError(400, "Invalid email or password. Please check your credentials and try again.")
     if not user.is_active:
-       raise HttpError(400, "User is not active")
+       raise HttpError(400, "Your account is not active. Please contact support.")
     try:
         token = RefreshToken.for_user(user)
         return {
@@ -73,11 +73,15 @@ def login(request, payload: EmailLoginSchema):
             "refresh_token": str(token),
         }
     except Exception as e:
-        raise HttpError(500, "Could not create user. Please try again later")
+        raise HttpError(500, "Could not create authentication token. Please try again later")
 
 
 @api.post("/signup/", response=UserSchema, auth=anon_required)
 def signup(request, payload: EmailLoginSchema):
+    # Check if user already exists with this email
+    if User.objects.filter(email__iexact=payload.email).exists():
+        raise HttpError(400, "An account with this email already exists. Please use a different email or try logging in.")
+    
     try:
         user = User.objects.create_user(
             email=payload.email,
@@ -118,13 +122,13 @@ def google_login_callback_view(request, payload: googler_schemas.GoogleCallbackS
     try:
         token_json = googler_oauth.verify_google_oauth_callback(state, code)
     except Exception as e:
-        raise HttpError(500, "Could login user. Please try again later")
+        raise HttpError(500, "Could not authenticate with Google. Please try again later")
     google_user_info = googler_oauth.verify_token_json(token_json)
     user = googler_services.get_or_create_google_user(google_user_info)
     if not user:
-        raise HttpError(400, "Could not login user try again")
+        raise HttpError(400, "Could not login user. Please try again")
     if not user.is_active:
-       raise HttpError(400, "User is not active")
+       raise HttpError(400, "User account is not active. Please contact support")
     token = RefreshToken.for_user(user)
     return {
         "username": user.display_name,

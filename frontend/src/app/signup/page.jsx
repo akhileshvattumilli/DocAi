@@ -60,7 +60,7 @@ export default function Page() {
         })
         setFieldErrors(newFieldErrors)
       } else {
-        setError(data.message || "Signup failed. Please try again.")
+        setError(data.detail || "Signup failed. Please try again.")
       }
     }
   }

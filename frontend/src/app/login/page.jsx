@@ -41,7 +41,7 @@ export default function Page() {
         if (response.ok) {
             auth.login(data?.username)
         } else {
-          setError(data.message || "Login failed. Please check your credentials.")
+          setError(data.detail || "Login failed. Please check your credentials.")
         }
     }
   return (

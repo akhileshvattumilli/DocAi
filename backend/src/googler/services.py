@@ -8,17 +8,21 @@ def get_or_create_google_user(google_user_info):
     if not email:
         raise ValueError("No email provided by Google")
 
+    # Normalize email to ensure consistency
+    email = email.lower().strip()
+    
     try:
-        user = User.objects.get(email=email)
+        # Try to find existing user by email (case-insensitive)
+        user = User.objects.get(email__iexact=email)
+        # If user exists but has a password set, they signed up manually
+        # We can still allow Google OAuth login for existing users
+        return user
     except User.DoesNotExist:
-        # Create new user
+        # Create new user with Google OAuth
         user = User.objects.create_user(
             email=email,
-            # first_name=google_user_info.get("given_name", ""),
-            # last_name=google_user_info.get("family_name", ""),
+            is_active=True,
         )
-        user.set_unusable_password()
-        # You might want to mark this user as having been created through Google OAuth
+        user.set_unusable_password()  # Google OAuth users don't need password
         user.save()
-
-    return user
+        return user
