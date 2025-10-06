@@ -16,8 +16,8 @@ const fontSans = FontSans({
 })
 
 export const metadata = {
-  title: "Django x Next.js",
-  description: "Django x Next.js",
+  title: "DocAI - AI-Powered Document Editor",
+  description: "DocAI is an AI-powered document editor that helps you create, collaborate, and bring your ideas to life with intelligent assistance.",
 };
 
 export default function RootLayout({ children }) {

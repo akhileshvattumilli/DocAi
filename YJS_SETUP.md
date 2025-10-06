@@ -46,7 +46,7 @@ cd backend
 
 #### Option B: Start servers separately
 ```bash
-# Terminal 1: Django server
+# Terminal 1: Backend server
 cd backend/src
 python manage.py runserver 8000
 
@@ -54,7 +54,7 @@ python manage.py runserver 8000
 cd backend
 python yjs_server.py
 
-# Terminal 3: Next.js frontend
+# Terminal 3: Frontend
 cd frontend
 npm run dev
 ```
@@ -76,7 +76,7 @@ npm run dev
 ```
 Frontend (TipTap + Yjs) ←→ WebSocket Server ←→ Multiple Clients
          ↓
-    Django Backend (Document Storage)
+    Backend (Document Storage)
 ```
 
 ## Benefits over CKEditor

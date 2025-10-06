@@ -25,7 +25,7 @@ SECRET_KEY = config("DJANGO_SECRET_KEY", cast=str, default=get_random_secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DJANGO_DEBUG", cast=bool, default=False)
 
-FRONTEND_URL = config("FRONTEND_URL", cast=str, default="https://djangonext.js")
+FRONTEND_URL = config("FRONTEND_URL", cast=str, default="https://docai.app")
 
 ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", cast=list, default=[])
 CSRF_TRUSTED_ORIGINS = config("DJANGO_CSRF_TRUSTED_ORIGINS", cast=list, default=[])

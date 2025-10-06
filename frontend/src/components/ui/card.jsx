@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 const Card = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("rounded-xl border bg-card text-card-foreground shadow", className)}
+    className={cn("rounded-flowmind-lg bg-card text-card-foreground shadow-flowmind-card hover:shadow-flowmind-card-hover transition-all duration-250 ease-out animate-flowmind-fade-in hover:-translate-y-1", className)}
     {...props} />
 ))
 Card.displayName = "Card"
@@ -13,7 +13,7 @@ Card.displayName = "Card"
 const CardHeader = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn("flex flex-col space-y-flowmind-s p-flowmind-l", className)}
     {...props} />
 ))
 CardHeader.displayName = "CardHeader"
@@ -21,7 +21,7 @@ CardHeader.displayName = "CardHeader"
 const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("font-semibold leading-none tracking-tight", className)}
+    className={cn("font-display font-semibold text-xl leading-tight tracking-tight", className)}
     {...props} />
 ))
 CardTitle.displayName = "CardTitle"
@@ -29,20 +29,20 @@ CardTitle.displayName = "CardTitle"
 const CardDescription = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("text-sm text-muted-foreground leading-relaxed", className)}
     {...props} />
 ))
 CardDescription.displayName = "CardDescription"
 
 const CardContent = React.forwardRef(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  <div ref={ref} className={cn("p-flowmind-l pt-0", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
 const CardFooter = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={cn("flex items-center p-flowmind-l pt-0", className)}
     {...props} />
 ))
 CardFooter.displayName = "CardFooter"

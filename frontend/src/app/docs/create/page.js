@@ -5,6 +5,7 @@ import { useAuth } from "@/components/authProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import fetcher from "@/lib/fetcher";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -53,22 +54,41 @@ export default function DocCreatePage() {
 
   const title = "Create new Document"
   return <>
-    <div className="w-full lg:grid lg:min-h-[85vh]  lg:grid-cols-2 xl:min-h-[90vh]">
-      <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[350px] gap-6">
-      <h1 className='text-4xl font-bold mb-4'>{title}</h1>
-      <form onSubmit={handleSubmit} className='space-y-2'>
-      {formError && (
-                <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
-                  {formError}
-                </div>
+    <div className="flex items-center justify-center min-h-[80vh] p-flowmind-l">
+      <Card className="w-full max-w-md animate-flowmind-scale-in">
+        <CardHeader className="text-center">
+          <CardTitle className="font-display text-3xl font-semibold text-foreground">{title}</CardTitle>
+          <CardDescription className="body-small">
+            Start a new document and bring your ideas to life
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className='space-y-flowmind-m'>
+            {formError && (
+              <div className="bg-destructive/15 text-destructive text-sm p-flowmind-s rounded-flowmind-md border border-destructive/20">
+                {formError}
+              </div>
             )}
-        <Input type='text' placeholder='Your new document title' name='title' />
-        <Button type='submit'>Create doc</Button>
-      </form>
-
-    </div>
-    </div>
+            <div className="space-y-flowmind-s">
+              <Input 
+                type='text' 
+                placeholder='Enter document title...' 
+                name='title' 
+                required
+                className="w-full"
+              />
+            </div>
+            <Button type='submit' className="w-full">
+              Create Document
+            </Button>
+            <div className="text-center">
+              <Link href="/docs" className="text-muted-foreground hover:text-accent-2 transition-colors duration-120 body-small">
+                ← Back to Documents
+              </Link>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   </>
 }
