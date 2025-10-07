@@ -12,6 +12,7 @@ class Doc(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=120, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
+    yjs_state = models.TextField(blank=True, null=True)  # Store YJS document state
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

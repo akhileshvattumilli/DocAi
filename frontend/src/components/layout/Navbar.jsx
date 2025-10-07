@@ -7,15 +7,35 @@ import BrandLink from "./BrandLink"
 import MobileNavbar from "./MobileNavbar"
 import AccountDropdown from "./AccountDropdown"
 import { useAPI } from "../apiProvider"
+import { usePathname, useParams } from "next/navigation"
+import useSWR from "swr"
+import fetcher from "@/lib/fetcher"
+import { Input } from "@/components/ui/input"
 
 
 export default function Navbar({className}) {
     const { isHealthy } = useAPI();
     const auth = useAuth()
+    const pathname = usePathname()
+    const params = useParams()
     const finalClass = className ? className : "sticky top-0 flex h-16 items-center gap-flowmind-m border-b border-muted bg-background/95 backdrop-blur-sm px-4 md:px-6 z-50"
+    const isDocDetail = typeof pathname === 'string' && pathname.startsWith('/docs/') && pathname.split('/').length >= 3
+    const docId = isDocDetail ? params?.docId : null
+    const { data: docData } = useSWR(docId ? `/api/documents/${docId}` : null, fetcher)
     return  <header className={finalClass}>
     <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <BrandLink displayName={true} />
+        {isDocDetail && (
+          <div className="ml-2 w-[480px]">
+            <Input
+              form="doc-edit-form"
+              name="title"
+              defaultValue={docData?.title || ''}
+              placeholder="Untitled document"
+              className="h-10 px-3 text-lg font-semibold text-black"
+            />
+          </div>
+        )}
   
        
       

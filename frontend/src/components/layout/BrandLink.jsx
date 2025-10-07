@@ -10,6 +10,6 @@ export default function BrandLink({className, displayName}){
         className={finalClass}
     >
         <Image src="/docAI__Logo.png" alt="DocAI Icon" width={40} height={40} className="rounded-flowmind-md" />
-        {displayName && <span className="font-display font-semibold text-foreground">DocAI</span>}
+        {displayName && <span className="font-display font-semibold text-2xl text-black">DocAI</span>}
     </Link>
 }

@@ -20,7 +20,7 @@ scripts:
     - ../venv/bin/pip-compile src/requirements/prod.in --output-file requirements.txt
     - ../venv/bin/pip install -r requirements.dev.txt
     - ../venv/bin/pip install -r requirements.txt
-  yjs-server:
+  websocket: #yjs-server
     - cd backend
     - ../venv/bin/python yjs_server.py
   dev-all:

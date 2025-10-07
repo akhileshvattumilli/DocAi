@@ -82,19 +82,17 @@ export default function DocDetailPage() {
  }
 
 
-  const title = doc?.title ? doc.title : "Document"
   return <>
     <div className="px-4">
-      <h1 className='text-4xl font-bold mb-4'>{title}</h1>
-      <form onSubmit={handleSubmit} className='space-y-2'>
+      <form id="doc-edit-form" onSubmit={handleSubmit} className='space-y-2'>
       {formError && (
                 <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
                   {formError}
                 </div>
             )}
-        <Input type='text' defaultValue={doc.title} name='title' />
         <DocEditor 
           onSave={handleOnSave}
+          titleElement={null}
         ref={editorRef} 
         docId={docId}
         initialData={doc.content} name='content' placeholder='Write your content here!' />
