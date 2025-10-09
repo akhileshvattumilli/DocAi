@@ -30,8 +30,8 @@ export default function DocListPage() {
   }
   return <>
   <div className="max-w-6xl mx-auto px-flowmind-l">
-    <div className="flex items-center justify-between mb-flowmind-xl">
-      <h1 className='font-display text-4xl font-semibold text-foreground'>Documents</h1>
+    <div className="mb-flowmind-xl">
+      <h1 className='font-display text-4xl font-semibold text-foreground mb-4'>Documents</h1>
       <Button asChild>
         <Link href='/docs/create'>Create New Document</Link>
       </Button>
@@ -66,27 +66,33 @@ export default function DocListPage() {
         </CardContent>
       </Card>
     ) : (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-flowmind-l">
+      <div className="space-y-2">
         {results.map((doc, idx)=>{
             const docLink = `/docs/${doc.id}`
             return (
-              <Card key={`doc-${doc.id}-${idx}`} className="hover:shadow-flowmind-card-hover transition-all duration-250">
-                <CardHeader>
-                  <CardTitle className="text-accent-2">
-                    <Link href={docLink} className="hover:underline">
-                      Document {doc.id}
-                    </Link>
-                  </CardTitle>
-                  <CardDescription>
-                    Created {new Date(doc.created_at).toLocaleDateString()}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline" asChild className="w-full">
-                    <Link href={docLink}>Open Document</Link>
+              <div 
+                key={`doc-${doc.id}-${idx}`} 
+                className="group flex items-center p-4 hover:bg-muted/50 rounded-lg transition-colors cursor-pointer border border-border/50 hover:border-border bg-card"
+                onClick={() => window.location.href = docLink}
+              >
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-medium text-foreground truncate group-hover:text-primary transition-colors">
+                    {doc.title || `Untitled Document ${idx + 1}`}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Created {new Date(doc.created_at).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </p>
+                </div>
+                <div className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href={docLink}>Open</Link>
                   </Button>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )
         })}
       </div>
