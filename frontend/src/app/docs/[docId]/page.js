@@ -5,6 +5,8 @@ import { useAuth } from "@/components/authProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import ShareSheet from "@/components/editor/ShareSheet";
 import fetcher from "@/lib/fetcher";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -34,8 +36,24 @@ export default function DocDetailPage() {
     if (!isAuthenticated && error.status === 401) {
       window.location.href='/login'
     }
-    if (isAuthenticated && error.status === 401) {
-      return <div>Invite required</div>
+    if (isAuthenticated && error.status === 403) {
+      return (
+        <div className="max-w-md mx-auto mt-flowmind-xl text-center">
+          <Card>
+            <CardHeader>
+              <CardTitle>This is a private document</CardTitle>
+              <CardDescription>
+                You don&apos;t have access. Ask the document&apos;s owner to invite you.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild>
+                <Link href="/docs">Back to documents</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )
     }
     if (error.status === 404) {
       return <div>Doc not found</div>
@@ -84,6 +102,11 @@ export default function DocDetailPage() {
 
   return <>
     <div className="px-4">
+      {doc.is_owner && (
+        <div className="flex justify-end mb-2">
+          <ShareSheet docId={docId} />
+        </div>
+      )}
       <form id="doc-edit-form" onSubmit={handleSubmit} className='space-y-2'>
       {formError && (
                 <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
