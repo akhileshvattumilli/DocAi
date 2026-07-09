@@ -109,7 +109,7 @@ export default function DocDetailPage() {
       )}
       <form id="doc-edit-form" onSubmit={handleSubmit} className='space-y-2'>
       {formError && (
-                <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
+                <div className="bg-destructive/15 text-destructive-strong border border-destructive/25 text-sm p-3 rounded-md">
                   {formError}
                 </div>
             )}

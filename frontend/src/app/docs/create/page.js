@@ -65,7 +65,7 @@ export default function DocCreatePage() {
         <CardContent>
           <form onSubmit={handleSubmit} className='space-y-flowmind-m'>
             {formError && (
-              <div className="bg-destructive/15 text-destructive text-sm p-flowmind-s rounded-flowmind-md border border-destructive/20">
+              <div className="bg-destructive/15 text-destructive-strong text-sm p-flowmind-s rounded-flowmind-md border border-destructive/20">
                 {formError}
               </div>
             )}

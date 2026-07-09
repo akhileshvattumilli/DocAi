@@ -113,7 +113,7 @@ export default function ShareSheet({ docId }) {
           />
           <p className="text-sm text-muted-foreground">They&apos;ll need an existing account.</p>
           {inviteError && (
-            <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
+            <div className="bg-destructive/15 text-destructive-strong border border-destructive/25 text-sm p-3 rounded-md">
               {inviteError}
             </div>
           )}
@@ -151,7 +151,7 @@ export default function ShareSheet({ docId }) {
                   </Button>
                 </div>
                 {revokeError?.id === c.id && (
-                  <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md mt-1">
+                  <div className="bg-destructive/15 text-destructive-strong border border-destructive/25 text-sm p-3 rounded-md mt-1">
                     {revokeError.message}
                   </div>
                 )}
