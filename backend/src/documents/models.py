@@ -25,6 +25,11 @@ class DocUser(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["doc", "user"], name="unique_doc_user"),
+        ]
+
     def save(self, *args, **kwargs):
         if not self.active and self.inactive_at is None:
             self.inactive_at = timezone.now()

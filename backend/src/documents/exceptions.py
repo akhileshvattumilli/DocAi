@@ -3,3 +3,9 @@ class DocumentNotFound(Exception):
 
 class UserNoPermissionNotAllowed(Exception):
     pass
+
+class UserNotFound(Exception):
+    pass
+
+class AlreadyCollaborator(Exception):
+    pass
