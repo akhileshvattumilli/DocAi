@@ -14,13 +14,13 @@ export async function GET(request, { params }) {
       },
       method: 'GET',
     });
+    const data = await response.json();
     if (!response.ok) {
       return NextResponse.json(
-        { error: 'Failed to fetch from backend' },
+        data,
         { status: response.status }
       );
     }
-    const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     return NextResponse.json(
@@ -43,14 +43,14 @@ export async function POST(request, { params }) {
       },
       body: JSON.stringify(body),
     });
+    const data = await response.json();
     if (!response.ok) {
       return NextResponse.json(
-        { error: 'Failed to fetch from backend' },
+        data,
         { status: response.status }
       );
     }
 
-    const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     return NextResponse.json(
