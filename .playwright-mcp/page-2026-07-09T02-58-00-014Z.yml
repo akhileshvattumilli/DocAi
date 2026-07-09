@@ -1,0 +1,15 @@
+- generic [active] [ref=f20e1]:
+  - generic [ref=f20e2]:
+    - banner [ref=f20e3]:
+      - navigation [ref=f20e4]:
+        - link "DocAI Icon DocAI" [ref=f20e5] [cursor=pointer]:
+          - /url: /
+          - img "DocAI Icon" [ref=f20e6]
+          - generic [ref=f20e7]: DocAI
+        - textbox "Untitled document" [ref=f20e9]
+      - button "Toggle user menu" [ref=f20e12] [cursor=pointer]:
+        - img
+        - generic [ref=f20e13]: Toggle user menu
+    - main [ref=f20e14]:
+      - generic [ref=f20e15]: Loading..
+  - alert [ref=f20e16]

@@ -1,0 +1,58 @@
+- generic [active] [ref=f11e1]:
+  - generic [ref=f11e2]:
+    - banner [ref=f11e3]:
+      - navigation [ref=f11e4]:
+        - link "DocAI Icon DocAI" [ref=f11e5] [cursor=pointer]:
+          - /url: /
+          - img "DocAI Icon" [ref=f11e6]
+          - generic [ref=f11e7]: DocAI
+        - textbox "Untitled document" [ref=f11e9]: Probe Doc
+      - button "Toggle user menu" [ref=f11e12] [cursor=pointer]:
+        - img
+        - generic [ref=f11e13]: Toggle user menu
+    - main [ref=f11e14]:
+      - generic [ref=f11e15]:
+        - button "Share" [ref=f11e28] [cursor=pointer]:
+          - img
+          - text: Share
+        - generic [ref=f11e29]:
+          - generic [ref=f11e30]:
+            - generic [ref=f11e32]:
+              - generic [ref=f11e33]:
+                - button "Heading" [ref=f11e36] [cursor=pointer]:
+                  - img [ref=f11e37]
+                  - generic [ref=f11e40]: Heading
+                  - img [ref=f11e41]
+                - button [ref=f11e44] [cursor=pointer]:
+                  - img [ref=f11e45]
+                - button [ref=f11e47] [cursor=pointer]:
+                  - img [ref=f11e48]
+                - button [ref=f11e50] [cursor=pointer]:
+                  - img [ref=f11e51]
+                - button [ref=f11e54] [cursor=pointer]:
+                  - img [ref=f11e55]
+                - button [ref=f11e62] [cursor=pointer]:
+                  - img [ref=f11e63]
+                - button [ref=f11e71] [cursor=pointer]:
+                  - img [ref=f11e72]
+                - button [ref=f11e76] [cursor=pointer]:
+                  - img [ref=f11e77]
+                - button [ref=f11e81] [cursor=pointer]:
+                  - img [ref=f11e82]
+              - button [ref=f11e87] [cursor=pointer]:
+                - img [ref=f11e88]
+            - paragraph [ref=f11e95]: Write your content here!
+            - generic [ref=f11e97]:
+              - generic [ref=f11e100]: Disconnected
+              - generic [ref=f11e101]:
+                - generic [ref=f11e102]: "Collaborative editing:"
+                - generic [ref=f11e103]: Connecting...
+          - button "Save" [ref=f11e104] [cursor=pointer]
+  - status [ref=f11e16]:
+    - generic [ref=f11e17]:
+      - img [ref=f11e19]
+      - generic [ref=f11e21]:
+        - text: Static route
+        - button "Hide static indicator" [ref=f11e22] [cursor=pointer]:
+          - img [ref=f11e23]
+  - alert [ref=f11e26]

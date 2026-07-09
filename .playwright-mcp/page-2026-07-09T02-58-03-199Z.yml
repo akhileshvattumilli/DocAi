@@ -1,0 +1,89 @@
+- generic:
+  - generic:
+    - banner:
+      - navigation:
+        - link:
+          - /url: /
+          - img
+          - generic: DocAI
+        - generic:
+          - textbox:
+            - /placeholder: Untitled document
+            - text: Verification Test Doc
+      - generic:
+        - generic:
+          - button:
+            - img
+            - generic: Toggle user menu
+    - main:
+      - generic:
+        - generic:
+          - button [expanded]:
+            - img
+            - text: Share
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - button:
+                      - img
+                      - generic: Heading
+                      - img
+                  - button:
+                    - img
+                  - button:
+                    - img
+                  - button:
+                    - img
+                  - button:
+                    - img
+                  - button:
+                    - img
+                  - button:
+                    - img
+                  - button:
+                    - img
+                  - button:
+                    - img
+                - generic:
+                  - button:
+                    - img
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: Write your content here!
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Disconnected
+                - generic:
+                  - generic: "Collaborative editing:"
+                  - generic: Connecting...
+          - button: Save
+  - status [ref=f20e17]:
+    - generic [ref=f20e18]:
+      - img [ref=f20e20]
+      - generic [ref=f20e22]:
+        - text: Static route
+        - button [ref=f20e23] [cursor=pointer]:
+          - img [ref=f20e24]
+  - alert
+  - dialog "Share document" [ref=f20e28]:
+    - button "Close" [ref=f20e29] [cursor=pointer]:
+      - img [ref=f20e30]
+      - generic [ref=f20e33]: Close
+    - generic [ref=f20e34]:
+      - heading "Share document" [level=2] [ref=f20e35]
+      - paragraph [ref=f20e36]: Invite people to collaborate on this document.
+    - generic [ref=f20e37]:
+      - text: Invite by email
+      - textbox "Invite by email" [active] [ref=f20e38]:
+        - /placeholder: person@example.com
+      - paragraph [ref=f20e39]: They'll need an existing account.
+      - button "Invite" [disabled]
+    - generic [ref=f20e42]:
+      - generic [ref=f20e43]: viewer_test@example.com
+      - button "Remove viewer_test@example.com" [ref=f20e44] [cursor=pointer]: Remove

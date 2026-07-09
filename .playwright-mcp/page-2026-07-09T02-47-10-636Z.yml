@@ -1,0 +1,40 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "DocAI Icon DocAI" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img "DocAI Icon" [ref=e6]
+          - generic [ref=e7]: DocAI
+      - link "Dashboard" [ref=e10] [cursor=pointer]:
+        - /url: /
+    - main [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - heading "Login" [level=1] [ref=e16]
+            - paragraph [ref=e17]: Enter your email below to login to your account
+          - button "Sign in with Google" [ref=e19] [cursor=pointer]
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - generic [ref=e23]: Email
+              - textbox "Email" [ref=e24]:
+                - /placeholder: Your email
+            - generic [ref=e25]:
+              - generic [ref=e27]: Password
+              - textbox "Password" [ref=e28]:
+                - /placeholder: Your password
+            - button "Login" [ref=e29] [cursor=pointer]
+          - generic [ref=e30]:
+            - text: Don't have an account?
+            - link "Sign up" [ref=e31] [cursor=pointer]:
+              - /url: /signup
+        - img "Image" [ref=e33]
+  - status [ref=e34]:
+    - generic [ref=e35]:
+      - img [ref=e37]
+      - generic [ref=e39]:
+        - text: Static route
+        - button "Hide static indicator" [ref=e40] [cursor=pointer]:
+          - img [ref=e41]
+  - alert [ref=e44]

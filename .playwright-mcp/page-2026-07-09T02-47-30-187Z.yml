@@ -1,0 +1,43 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "DocAI Icon DocAI" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img "DocAI Icon" [ref=e6]
+          - generic [ref=e7]: DocAI
+      - button "Toggle user menu" [ref=e47] [cursor=pointer]:
+        - img
+        - generic [ref=e48]: Toggle user menu
+    - main [ref=e11]:
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - heading "Welcome to DocAI" [level=1] [ref=e51]
+          - paragraph [ref=e52]: Your AI-powered writing companion. Create, collaborate, and bring your ideas to life with intelligent assistance.
+        - generic [ref=e53]:
+          - link "Create new doc" [ref=e54] [cursor=pointer]:
+            - /url: /docs/create
+          - link "View Docs" [ref=e55] [cursor=pointer]:
+            - /url: /docs
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - generic [ref=e59]: AI-Powered
+            - generic [ref=e61]: Get intelligent suggestions and assistance as you write
+          - generic [ref=e62]:
+            - generic [ref=e64]: Real-time Collaboration
+            - generic [ref=e66]: Work together seamlessly with live editing and comments
+          - generic [ref=e67]:
+            - generic [ref=e69]: Smart Organization
+            - generic [ref=e71]: Keep your documents organized and easily accessible
+        - link "Go to the code →" [ref=e73] [cursor=pointer]:
+          - /url: https://github.com/akhileshvattumilli/DocAi
+          - img [ref=e74]
+          - text: Go to the code →
+  - status [ref=e34]:
+    - generic [ref=e35]:
+      - img [ref=e37]
+      - generic [ref=e39]:
+        - text: Static route
+        - button "Hide static indicator" [ref=e40] [cursor=pointer]:
+          - img [ref=e41]
+  - alert [ref=e44]

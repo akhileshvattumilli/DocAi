@@ -1,0 +1,22 @@
+- generic [active] [ref=f11e1]:
+  - generic [ref=f11e2]:
+    - banner [ref=f11e3]:
+      - navigation [ref=f11e4]:
+        - link "DocAI Icon DocAI" [ref=f11e5] [cursor=pointer]:
+          - /url: /
+          - img "DocAI Icon" [ref=f11e6]
+          - generic [ref=f11e7]: DocAI
+        - textbox "Untitled document" [ref=f11e9]
+      - button "Toggle user menu" [ref=f11e12] [cursor=pointer]:
+        - img
+        - generic [ref=f11e13]: Toggle user menu
+    - main [ref=f11e14]:
+      - generic [ref=f11e15]: Loading..
+  - status [ref=f11e16]:
+    - generic [ref=f11e17]:
+      - img [ref=f11e19]
+      - generic [ref=f11e21]:
+        - text: Static route
+        - button "Hide static indicator" [ref=f11e22] [cursor=pointer]:
+          - img [ref=f11e23]
+  - alert [ref=f11e26]
