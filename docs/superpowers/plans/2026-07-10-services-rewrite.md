@@ -1,6 +1,6 @@
 # Backend services.py Rewrite Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Rewrite `backend/src/documents/services.py` and extend
 `backend/src/documents/exceptions.py` to support document trash/restore/
@@ -104,7 +104,7 @@ does today (same exception, same 403 mapping the api.py task will reuse).
 - Produces: `FolderNotFound`, `FolderAlreadyExists`, `CommentNotFound`,
   `AlreadyInTrash`, `NotInTrash` — all plain `Exception` subclasses.
 
-- [ ] **Step 1: Add the five exception classes**
+- [x] **Step 1: Add the five exception classes**
 
 ```python
 class DocumentNotFound(Exception):
@@ -129,7 +129,7 @@ class NotInTrash(Exception):
     pass
 ```
 
-- [ ] **Step 2: Verify with manage.py check**
+- [x] **Step 2: Verify with manage.py check**
 
 Run (from `backend/src`):
 ```bash
@@ -137,7 +137,7 @@ Run (from `backend/src`):
 ```
 Expected: `System check identified no issues (0 silenced).`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add backend/src/documents/exceptions.py
@@ -158,7 +158,7 @@ git commit -m "feat(documents): add folder/comment/trash exceptions"
   plus the cache-key helper `_doc_list_cache_key(user_id, folder_id, trash)`
   used by every later mutation task to invalidate the right keys.
 
-- [ ] **Step 1: Replace the cache constant and add a key-builder helper**
+- [x] **Step 1: Replace the cache constant and add a key-builder helper**
 
 ```python
 from django.db.models import Q
@@ -182,7 +182,7 @@ def _invalidate_doc_list_cache(user_id, *, folder_ids=()):
     cache.delete_many(keys)
 ```
 
-- [ ] **Step 2: Rewrite `list_documents`**
+- [x] **Step 2: Rewrite `list_documents`**
 
 ```python
 def list_documents(user=None, folder_id=None, trash=False, force=False):
@@ -209,14 +209,14 @@ def list_documents(user=None, folder_id=None, trash=False, force=False):
     return results
 ```
 
-- [ ] **Step 3: Verify with manage.py check**
+- [x] **Step 3: Verify with manage.py check**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py check
 ```
 Expected: no issues.
 
-- [ ] **Step 4: Manual smoke test via manage.py shell**
+- [x] **Step 4: Manual smoke test via manage.py shell**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py shell -c "
@@ -235,7 +235,7 @@ u.delete()
 Expected: `default list count: 1`, `trash list count (should be 0): 0`, no
 traceback.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add backend/src/documents/services.py
@@ -256,7 +256,7 @@ git commit -m "feat(documents): rewrite list_documents with folder/trash scoping
 - Produces: `_get_owned_document`, `trash_document`, `restore_document`,
   `delete_document_forever`, `empty_trash`.
 
-- [ ] **Step 1: Add `_get_owned_document`**
+- [x] **Step 1: Add `_get_owned_document`**
 
 ```python
 def _get_owned_document(user, document_id):
@@ -269,7 +269,7 @@ def _get_owned_document(user, document_id):
     return obj
 ```
 
-- [ ] **Step 2: Add `trash_document` / `restore_document`**
+- [x] **Step 2: Add `trash_document` / `restore_document`**
 
 ```python
 def trash_document(user, document_id):
@@ -292,7 +292,7 @@ def restore_document(user, document_id):
     return obj
 ```
 
-- [ ] **Step 3: Add `delete_document_forever` / `empty_trash`**
+- [x] **Step 3: Add `delete_document_forever` / `empty_trash`**
 
 ```python
 def delete_document_forever(user, document_id):
@@ -309,14 +309,14 @@ def empty_trash(user):
     _invalidate_doc_list_cache(user.id)
 ```
 
-- [ ] **Step 4: Verify with manage.py check**
+- [x] **Step 4: Verify with manage.py check**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py check
 ```
 Expected: no issues.
 
-- [ ] **Step 5: Manual smoke test — trash/restore/delete-forever + cache invalidation + owner check**
+- [x] **Step 5: Manual smoke test — trash/restore/delete-forever + cache invalidation + owner check**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py shell -c "
@@ -367,7 +367,7 @@ other.delete()
 ```
 Expected: every print line reads as a pass (`True` / '...raised correctly').
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add backend/src/documents/services.py
@@ -386,7 +386,7 @@ git commit -m "feat(documents): add trash/restore/delete-forever/empty-trash ser
   `exceptions.FolderNotFound`.
 - Produces: `rename_document`, `duplicate_document`, `move_document`.
 
-- [ ] **Step 1: Add `rename_document`**
+- [x] **Step 1: Add `rename_document`**
 
 ```python
 def rename_document(user, document_id, title):
@@ -399,7 +399,7 @@ def rename_document(user, document_id, title):
     return obj
 ```
 
-- [ ] **Step 2: Add `duplicate_document`**
+- [x] **Step 2: Add `duplicate_document`**
 
 ```python
 def duplicate_document(user, document_id):
@@ -414,7 +414,7 @@ def duplicate_document(user, document_id):
     return copy
 ```
 
-- [ ] **Step 3: Add `move_document`**
+- [x] **Step 3: Add `move_document`**
 
 ```python
 def move_document(user, document_id, folder_id):
@@ -433,14 +433,14 @@ def move_document(user, document_id, folder_id):
     return obj
 ```
 
-- [ ] **Step 4: Verify with manage.py check**
+- [x] **Step 4: Verify with manage.py check**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py check
 ```
 Expected: no issues.
 
-- [ ] **Step 5: Manual smoke test — rename/duplicate/move + cache invalidation**
+- [x] **Step 5: Manual smoke test — rename/duplicate/move + cache invalidation**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py shell -c "
@@ -483,7 +483,7 @@ owner.delete()
 ```
 Expected: every print line reads as a pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add backend/src/documents/services.py
@@ -503,7 +503,7 @@ git commit -m "feat(documents): add rename/duplicate/move document services"
 - Produces: `list_folders`, `create_folder`, `rename_folder`,
   `delete_folder`.
 
-- [ ] **Step 1: Add the four folder functions**
+- [x] **Step 1: Add the four folder functions**
 
 ```python
 from django.db import IntegrityError
@@ -551,7 +551,7 @@ def delete_folder(user, folder_id):
 Note: `IntegrityError` import goes at the top of the file with the other
 imports in the real edit (shown inline here for readability).
 
-- [ ] **Step 2: Move the `from django.db import IntegrityError` line to the top-of-file import block**
+- [x] **Step 2: Move the `from django.db import IntegrityError` line to the top-of-file import block**
 
 Edit the top of `services.py` so imports read:
 ```python
@@ -564,14 +564,14 @@ from . import exceptions
 from .models import Doc, Folder, Tag, Comment
 ```
 
-- [ ] **Step 3: Verify with manage.py check**
+- [x] **Step 3: Verify with manage.py check**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py check
 ```
 Expected: no issues.
 
-- [ ] **Step 4: Manual smoke test — folder CRUD + SET_NULL cascade on delete**
+- [x] **Step 4: Manual smoke test — folder CRUD + SET_NULL cascade on delete**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py shell -c "
@@ -604,7 +604,7 @@ owner.delete()
 ```
 Expected: every print line reads as a pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add backend/src/documents/services.py
@@ -622,7 +622,7 @@ git commit -m "feat(documents): add folder CRUD services"
 - Consumes: `_get_owned_document`, `_invalidate_doc_list_cache`.
 - Produces: `list_tags`, `add_tag_to_document`, `remove_tag_from_document`.
 
-- [ ] **Step 1: Add the three tag functions**
+- [x] **Step 1: Add the three tag functions**
 
 ```python
 def list_tags(user):
@@ -647,14 +647,14 @@ def remove_tag_from_document(user, document_id, tag_id):
     return obj
 ```
 
-- [ ] **Step 2: Verify with manage.py check**
+- [x] **Step 2: Verify with manage.py check**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py check
 ```
 Expected: no issues.
 
-- [ ] **Step 3: Manual smoke test — tag add/remove, case normalization, cache invalidation**
+- [x] **Step 3: Manual smoke test — tag add/remove, case normalization, cache invalidation**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py shell -c "
@@ -683,7 +683,7 @@ owner.delete()
 ```
 Expected: every print line reads as a pass.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add backend/src/documents/services.py
@@ -704,7 +704,7 @@ git commit -m "feat(documents): add tag list/add/remove services"
 - Produces: `list_comments`, `add_comment`, `resolve_comment`,
   `delete_comment`.
 
-- [ ] **Step 1: Add `list_comments`**
+- [x] **Step 1: Add `list_comments`**
 
 ```python
 def list_comments(user, document_id):
@@ -717,7 +717,7 @@ def list_comments(user, document_id):
     )
 ```
 
-- [ ] **Step 2: Add `add_comment`**
+- [x] **Step 2: Add `add_comment`**
 
 ```python
 def add_comment(user, document_id, body, parent_id=None):
@@ -733,7 +733,7 @@ def add_comment(user, document_id, body, parent_id=None):
     return Comment.objects.create(doc_id=document_id, user=user, parent=parent, body=body)
 ```
 
-- [ ] **Step 3: Add `resolve_comment`**
+- [x] **Step 3: Add `resolve_comment`**
 
 ```python
 def resolve_comment(user, document_id, comment_id, resolved):
@@ -747,7 +747,7 @@ def resolve_comment(user, document_id, comment_id, resolved):
     return comment
 ```
 
-- [ ] **Step 4: Add `delete_comment`**
+- [x] **Step 4: Add `delete_comment`**
 
 ```python
 def delete_comment(user, document_id, comment_id):
@@ -763,14 +763,14 @@ def delete_comment(user, document_id, comment_id):
     comment.delete()
 ```
 
-- [ ] **Step 5: Verify with manage.py check**
+- [x] **Step 5: Verify with manage.py check**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py check
 ```
 Expected: no issues.
 
-- [ ] **Step 6: Manual smoke test — thread/reply, single-level nesting rejection, resolve toggle, delete permissions**
+- [x] **Step 6: Manual smoke test — thread/reply, single-level nesting rejection, resolve toggle, delete permissions**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py shell -c "
@@ -822,7 +822,7 @@ owner nor active collaborator, so `get_document` itself raises
 `UserNoPermissionNotAllowed` before reaching the author/owner check — this
 is expected and correct).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add backend/src/documents/services.py
@@ -837,14 +837,14 @@ git commit -m "feat(documents): add comment thread/reply/resolve/delete services
 - Read-only verification of `backend/src/documents/services.py` and
   `backend/src/documents/exceptions.py`.
 
-- [ ] **Step 1: Run `manage.py check` one final time**
+- [x] **Step 1: Run `manage.py check` one final time**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py check
 ```
 Expected: `System check identified no issues (0 silenced).`
 
-- [ ] **Step 2: Confirm no leftover smoke-test users**
+- [x] **Step 2: Confirm no leftover smoke-test users**
 
 ```bash
 "/Users/akhileshvattumilli/Desktop/coding archieve/DocAi/venv/bin/python" manage.py shell -c "
@@ -855,7 +855,7 @@ print(User.objects.filter(username__startswith='svc_smoke_').count())
 ```
 Expected: `0` — every smoke test above cleans up its own users.
 
-- [ ] **Step 3: Report to orchestrator**
+- [x] **Step 3: Report to orchestrator**
 
 No commit for this task — it's verification only. Message the
 orchestrator (`main`) with: what changed, this plan's path, and
