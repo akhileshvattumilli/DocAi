@@ -27,6 +27,8 @@ from googler import (
 from accounts.api import router as accounts_router
 from ai.api import router as ai_router
 from documents.api import router as document_router
+from documents.folders_api import router as folder_router
+from documents.tags_api import router as tag_router
 
 LOGIN_REDIRECT_URL = settings.LOGIN_REDIRECT_URL
 
@@ -40,6 +42,8 @@ api.register_controllers(DjangoNextCustomController)
 api.add_router('/accounts', accounts_router)
 api.add_router('/ai', ai_router)
 api.add_router('/documents', document_router)
+api.add_router('/folders', folder_router)
+api.add_router('/tags', tag_router)
 
 
 @api.get("/hello/", auth=user_or_anon)
