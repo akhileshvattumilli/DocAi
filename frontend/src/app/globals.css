@@ -35,7 +35,8 @@
     
     --destructive: 6 78% 57%; /* Coral Red #E74C3C */
     --destructive-foreground: 0 0% 100%;
-    
+    --destructive-strong: 6 75% 32%;
+
     --success: 122 39% 49%; /* Emerald Green #4CAF50 */
     --success-foreground: 0 0% 100%;
     
@@ -74,7 +75,8 @@
     
     --destructive: 6 78% 57%; /* Coral Red */
     --destructive-foreground: 220 20% 97%;
-    
+    --destructive-strong: 6 90% 80%;
+
     --success: 122 39% 49%; /* Emerald Green */
     --success-foreground: 220 20% 97%;
     

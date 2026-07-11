@@ -6,6 +6,7 @@ import { APIProvider } from "@/components/apiProvider";
 import { AuthProvider } from "@/components/authProvider";
 import { ThemeProvider } from "@/components/themeProvider";
 import BaseLayout from "@/components/layout/BaseLayout";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils"
 
 import "./globals.css";
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
             <BaseLayout className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col bg-muted/40">
                 {children}
             </BaseLayout>
+            <Toaster />
           </AuthProvider>
           </APIProvider>
           </ThemeProvider>
